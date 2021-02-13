@@ -23,10 +23,10 @@ import twitter #for docs, see https://python-twitter.readthedocs.io/en/latest/tw
 def twitter_demo():
     # connect to api with apikeys
     # if you don't have apikeys, go to apps.twitter.com
-    api = twitter.Api(consumer_key='Mt4tanU02svrWZNtNqtimPTNw',
-                      consumer_secret='cH7v9dzxtjpdEzf74aOMvx7CklQCeYXJthWyXuwFRMwAGDFZwU',
-                      access_token_key='2453218927-olNfXSrSSu0GDwTDLHuW6GAk0NfetMAOrZIlSJ3',
-                      access_token_secret='pRe6SWhAMmP8QP4lhnxcJFAmJsZeo0BEXvvGFrdzQbNij')
+    api = twitter.Api(consumer_key='',
+                      consumer_secret='',
+                      access_token_key='',
+                      access_token_secret='')
 
     # get followers
     print("Getting a list of accounts I follow on Twitter...")
