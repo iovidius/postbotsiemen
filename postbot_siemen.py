@@ -7,7 +7,7 @@ load_dotenv()
 
 import tweepy
 import os
-
+import wokkietokkie
 
 # Authenticate to Twitter
 #auth = tweepy.OAuthHandler(os.getenv('CONSUMER_KEY'), os.getenv('CONSUMER_SECRET'))
@@ -20,42 +20,23 @@ import os
 #api.update_status("Hooooooooooi!")
 
 
-vowels = {
-  'a': '1',
-  'e': '2',
-  'i': '3',
-  'o': '4',
-  'u': '5',
-  '1':'a',
-  '2':'e',
-  '3':'i',
-  '4':'o',
-  '5':'u'
-}
 
-# Returns the translation of an input string to 'wokkie tokkie'
-def to_wokkietokkie(input): 
-    output = ''
-    for c in input:
-        if (c in vowels):
-            output += vowels[c] + ' '
-        else:
-            output += c +  'okkie ' if c.isalpha() else c
-    return output.strip()
 
-# Returns the translation of a 'wokkie tokkie' string to a normal string
-# Expects an input in wokkie tokkie format.
-def from_wokkietokkie(input):
+# Generate a reply to a tweet.
+def reply(tweet):
 
-    # remove spaces
-    output = input.replace(' ','')
+    # Check wokkie-tokkie matches
+    match = wokkietokkie.match(tweet)
+  
+    if (match != ''):
+         # There has been an instance of 'wokkie tokkie'. Our response is to give a translation.
+        translation = wokkietokkie.decipher(match)
+        return "Hooi! Dat betekent '" + translation + "'."
+    elif not ' ' in tweet:
+        # This is just one word. Translate it.
+       return "Dat is " + wokkietokkie.encipher(tweet) + '!'
 
-    # replace all consonants
-    output = output.replace('okkie','')
 
-    # replace all numbers
-    for c in output:
-        if (c in vowels):
-            output = output.replace(c,vowels[c])
 
-    return output
+print(reply("Wat is gokkie 2 sokkie 4 dokkie 2 mokkie 3 2 tokkie 2 rokkie?"))
+print(reply("gesodemieter"))
