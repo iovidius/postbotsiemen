@@ -18,8 +18,6 @@ def reply(tweet):
   
     if (match != ''):
          # There has been an instance of 'wokkie tokkie'. Our response is to give a translation.
-         # First check if the translation is a bad word, then check if the user has 
-         # put it there (e.g. "does X translate to Y?")
         translation = wokkietokkie.decipher(match)
         
         # Check if bad word
@@ -57,7 +55,7 @@ def reply_to_mentions(api, since_id):
         reply = '@' + tweet.user.screen_name + ' ' + reply(input)
         if len(reply) > 280:
             reply = '@' + tweet.user.screen_name + ' ' + replies.generate(Template.too_long)
-            
+
         api.update_status(reply, tweet.id)
 
     return new_since_id
