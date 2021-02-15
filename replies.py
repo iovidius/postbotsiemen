@@ -42,5 +42,3 @@ def isBad(input):
      if input in myfile.read():
          return Word.bad_en
     return Word.normal
-
-    
