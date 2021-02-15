@@ -41,7 +41,7 @@ def decipher(input):
 
     return output
 
-pattern = re.compile("(([a-z]okkie(\s)*)|[12345](\s)*)+", re.IGNORECASE)
+pattern = re.compile('(([a-z]okkie(\s)*)|[12345](\s)*)+', re.IGNORECASE)
 
 # Find the wokkie tokkie elements of a string.
 def match(input):
