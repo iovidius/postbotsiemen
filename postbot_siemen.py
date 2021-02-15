@@ -8,6 +8,8 @@ load_dotenv()
 import tweepy
 import os
 import wokkietokkie
+import replies
+from replies import Template, generate
 
 # Authenticate to Twitter
 #auth = tweepy.OAuthHandler(os.getenv('CONSUMER_KEY'), os.getenv('CONSUMER_SECRET'))
@@ -30,13 +32,21 @@ def reply(tweet):
   
     if (match != ''):
          # There has been an instance of 'wokkie tokkie'. Our response is to give a translation.
+         # First check if the translation is already there!
         translation = wokkietokkie.decipher(match)
-        return "Hooi! Dat betekent '" + translation + "'."
+    
+        if (translation in tweet):
+            return replies.generate(Template.confirmation)
+        else:
+            return replies.generate(Template.translation, translation)
     elif not ' ' in tweet:
         # This is just one word. Translate it.
-       return "Dat is " + wokkietokkie.encipher(tweet) + '!'
+       return replies.generate(Template.translation, wokkietokkie.encipher(tweet))
+    else:
+        # No idea
+        return replies.generate(Template.dunno)
 
 
 
 print(reply("Wat is gokkie 2 sokkie 4 dokkie 2 mokkie 3 2 tokkie 2 rokkie?"))
-print(reply("gesodemieter"))
+print(reply("is gokkie 4 2 dokkie goed?"))
