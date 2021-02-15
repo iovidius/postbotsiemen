@@ -55,12 +55,12 @@ def reply_to_mentions(api, since_id):
         
         # preprocess
         input = tweet.text.replace('@PostbotSiemen', '').strip()
-        reply = '@' + tweet.user.screen_name + ' ' + reply(input)
-        if len(reply) > 280:
-            reply = '@' + tweet.user.screen_name + ' ' + replies.generate(Template.too_long)
+        rep = '@' + tweet.user.screen_name + ' ' + reply(input)
+        if len(rep) > 280:
+            rep = '@' + tweet.user.screen_name + ' ' + replies.generate(Template.too_long)
 
         print("Replying to " + tweet.user.screen_name)
-        api.update_status(reply, tweet.id)
+        api.update_status(rep, tweet.id)
 
     return new_since_id
 
