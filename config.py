@@ -3,7 +3,6 @@ load_dotenv()
 
 import tweepy
 import os
-from flask import Flask
 
 # Authenticate to Twitter and create API object
 def create_api():
