@@ -11,6 +11,8 @@ from config import create_api
 import tweepy
 import time
 import random
+from flask import Flask
+import os
 
 # Generate a reply to a tweet
 def reply(tweet):
@@ -68,16 +70,21 @@ def tweet_quote():
     with open("data/siemen.txt") as f:
         lines = f.readlines()
         api.update_status(random.choice(lines))
-        
+
 
 # Main function
-print("Started!")
-api = create_api()
-print("Connected!")
-since_id = 1
 
-while True:
-    since_id = reply_to_mentions(api, since_id)
-    time.sleep(60)
+def main():
+    app = Flask(__name__)
+    app.run(os.getenv('PORT'))
+
+    print("Started!")
+    api = create_api()
+    print("Connected!")
+    since_id = 1
+
+    while True:
+        since_id = reply_to_mentions(api, since_id)
+        time.sleep(60)
 
 tweet_quote()
