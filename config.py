@@ -8,7 +8,6 @@ from flask import Flask
 # Authenticate to Twitter and create API object
 def create_api():
     app = Flask(__name__)
-    app.run(os.getenv('PORT'))
     app.run(host= '0.0.0.0', port=os.getenv('PORT'))
 
     consumer_key = os.getenv('CONSUMER_KEY')
