@@ -1,6 +1,7 @@
 # Postbot Siemen is a Twitter bot based on Postbode Siemen (Zaai). He can:
 #   1) Give the translation of any word to the secret code of 'Wokkie Tokkie' 
-#   2) Tell people who are being bored that he has to work
+#   2) Send people who are bored YT links
+#   3) Posts a quote every week 
 
 
 import wokkietokkie
@@ -9,6 +10,7 @@ from replies import Template, Word
 from config import create_api
 import tweepy
 import time
+import random
 
 # Generate a reply to a tweet
 def reply(tweet):
@@ -42,7 +44,7 @@ def reply(tweet):
 
 # Check mentions
 def reply_to_mentions(api, since_id):
- 
+    print("Retrieving mentions...")
     new_since_id = since_id
     for tweet in tweepy.Cursor(api.mentions_timeline,
         since_id=since_id).items():
@@ -56,18 +58,26 @@ def reply_to_mentions(api, since_id):
         if len(reply) > 280:
             reply = '@' + tweet.user.screen_name + ' ' + replies.generate(Template.too_long)
 
+        print("Replying to " + tweet.user.screen_name)
         api.update_status(reply, tweet.id)
 
     return new_since_id
 
+# Select a random quote
+def tweet_quote():
+    with open("data/siemen.txt") as f:
+        lines = f.readlines()
+        api.update_status(random.choice(lines))
+        
 
 # Main function
-def main():
-    api = create_api()
-    since_id = 1
-    while True:
-        since_id = reply_to_mentions(api, since_id)
-        time.sleep(60)
+print("Started!")
+api = create_api()
+print("Connected!")
+since_id = 1
 
+while True:
+    since_id = reply_to_mentions(api, since_id)
+    time.sleep(60)
 
-main()
+tweet_quote()
