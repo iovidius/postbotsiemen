@@ -10,9 +10,7 @@ from config import create_api
 import tweepy
 import time
 
-
-
-# Generate a reply to a tweet.
+# Generate a reply to a tweet
 def reply(tweet):
 
     # Check wokkie-tokkie matches
@@ -40,18 +38,38 @@ def reply(tweet):
         # This is just one word. Translate it.
        return replies.generate(Template.translation, wokkietokkie.encipher(tweet))
     else:
-        # No idea
+        # Other input
         return replies.generate(Template.dunno)
+
+
+# Check mentions
+def reply_to_mentions(api, since_id):
+ 
+    new_since_id = since_id
+    for tweet in tweepy.Cursor(api.mentions_timeline,
+        since_id=since_id).items():
+        new_since_id = max(tweet.id, new_since_id)
+        if tweet.in_reply_to_status_id is not None:
+            continue
+        
+        # preprocess
+        input = tweet.text.replace('@PostbotSiemen', '').strip()
+        reply = '@' + tweet.user.screen_name + ' ' + reply(input)
+        if len(reply) > 280:
+            reply = '@' + tweet.user.screen_name + ' ' + replies.generate(Template.too_long)
+            
+        api.update_status(reply, tweet.id)
+
+    return new_since_id
 
 
 # Main function
 def main():
     api = create_api()
+    since_id = 1
     while True:
-        #follow_followers(api)
+        since_id = reply_to_mentions(api, since_id)
         time.sleep(60)
 
 
-#print(reply('Wat is gokkie 2 sokkie 4 dokkie 2 mokkie 3 2 tokkie 2 rokkie?'))
-#print(reply('heeey siemen, wat is kokkie 5 tokkie?'))
-print(replies.isBad("hoi"))
+main()

@@ -4,6 +4,8 @@ load_dotenv()
 import tweepy
 import os
 
+
+
 # Authenticate to Twitter and create API object
 def create_api():
     consumer_key = os.getenv('CONSUMER_KEY')
