@@ -72,7 +72,6 @@ def tweet_quote(api):
 
 
 # Main function
-
 def main():
     print("Started!")
     api = create_api()
@@ -81,7 +80,7 @@ def main():
 
     while True:
         since_id = reply_to_mentions(api, since_id)
-        time.sleep(60)
+        time.sleep(15)
 
 main()
 
