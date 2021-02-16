@@ -11,7 +11,7 @@ from config import create_api
 import tweepy
 import time
 import random
-
+import os
 
 # Generate a reply to a tweet
 def reply(tweet):
@@ -47,20 +47,29 @@ def reply(tweet):
 def reply_to_mentions(api, since_id):
     print("Retrieving mentions...")
     new_since_id = since_id
+
     for tweet in tweepy.Cursor(api.mentions_timeline,
         since_id=since_id).items():
-        new_since_id = max(tweet.id, new_since_id)
-        if tweet.in_reply_to_status_id is not None:
-            continue
-        
-        # preprocess
-        input = tweet.text.replace('@PostbotSiemen', '').strip()
-        rep = '@' + tweet.user.screen_name + ' ' + reply(input)
-        if len(rep) > 280:
-            rep = '@' + tweet.user.screen_name + ' ' + replies.generate(Template.too_long)
+        try:
+            new_since_id = max(tweet.id, new_since_id)
+            if tweet.in_reply_to_status_id is not None:
+                continue
+            
+            # Check if there is already a reply
+            if hasattr(tweet, 'in_reply_to_status_id_str'):
+                continue
 
-        print("Replying to " + tweet.user.screen_name)
-        api.update_status(rep, tweet.id)
+            # preprocess
+            input = tweet.text.replace('@PostbotSiemen', '').strip()
+            rep = '@' + tweet.user.screen_name + ' ' + reply(input)
+
+            if len(rep) > 280:
+                rep = '@' + tweet.user.screen_name + ' ' + replies.generate(Template.too_long)
+
+            print("Replying to " + tweet.user.screen_name)
+            api.update_status(rep, tweet.id)
+        except tweepy.TweepError as e:
+            print(e.reason)
 
     return new_since_id
 
