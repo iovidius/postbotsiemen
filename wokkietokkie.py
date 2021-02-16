@@ -1,5 +1,3 @@
-import re
-
 # Key of vowels
 vowels = {
   'a': '1',
@@ -40,13 +38,3 @@ def decipher(input):
             output = output.replace(c,vowels[c])
 
     return output
-
-pattern = re.compile('(([a-z]okkie(\s)*)|[12345](\s)*)+', re.IGNORECASE)
-
-# Find the wokkie tokkie elements of a string.
-def match(input):
-    x = re.search(pattern, input)
-    if x is None:
-        return ''
-    else:
-        return x.group(0)

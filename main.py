@@ -7,7 +7,6 @@ from data import getData, setData
 
 import tweets
 from config import create_api
-import sys
 import random
 from datetime import timedelta
 from timeloop import Timeloop
@@ -28,12 +27,15 @@ def MentionsJob():
     
         
 @tl.job(interval=timedelta(hours=5))
-def tweet_quote(api):
+def tweet_quote():
     # Select a random quote
     with open("data/siemen.txt") as f:
         lines = f.readlines()
         oldQuote = getData('lastQuote')
-        tweet = api.update_status(random.choice(x for x in lines if x != oldQuote))
+        quotes = [x for x in lines if x != oldQuote]
+        tweet = api.update_status(random.choice(quotes))
         setData('lastQuote', tweet.text)
+        print('Sent quote')
 
-tl.start(block=True)
+#tl.start(block=True)
+

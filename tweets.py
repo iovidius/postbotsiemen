@@ -1,15 +1,36 @@
+from typing import Pattern
 import wokkietokkie
 import replies
 import tweepy
-import sys
 from replies import Template, Word
 import data
+from regex_methods import match, trans_pattern, quotes_pattern, wt_pattern, bored_pattern
+
+# Check if user asks for translation (e.g. 'wat is X?')
+def ask_for_translation(tweet):
+    if not ' ' in tweet:
+        return tweet
+
+    match = match(tweet.lower(), trans_pattern)
+    if match != '':
+        return match.group(0)
+    
+    match = match(tweet.lower(), quotes_pattern)
+    if match != '':
+        return match.group(0)[1:-1]
+    
+    return ''
+
+
+# Check if user says he's bored (e.g. ik verveel me)
+def ask_for_bored(tweet):
+    return match(tweet, bored_pattern) != ''
 
 # Generate a reply to a tweet
 def reply(tweet):
 
     # Check wokkie-tokkie matches
-    match = wokkietokkie.match(tweet)
+    match = match(tweet, wt_pattern)
   
     if (match != ''):
          # There has been an instance of 'wokkie tokkie'. Our response is to give a translation.
@@ -27,9 +48,11 @@ def reply(tweet):
         
         # Return translation
         return replies.generate(Template.translation, translation)
-    elif not ' ' in tweet:
-        # This is just one word. Translate it.
+    elif ask_for_translation(tweet) != '':
+        # Translate
        return replies.generate(Template.translation, wokkietokkie.encipher(tweet))
+    elif ask_for_bored(tweet):
+        return replies.generate(Template.bored)
     else:
         # Other input
         return replies.generate(Template.dunno)
@@ -61,5 +84,5 @@ def reply_to_mentions(api, since_id):
             
         except tweepy.TweepError as e:
             print(e.reason)
-            
+
     return new_since_id
