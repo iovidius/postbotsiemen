@@ -11,13 +11,13 @@ def ask_for_translation(tweet):
     if not ' ' in tweet:
         return tweet
 
-    match = match(tweet.lower(), trans_pattern)
-    if match != '':
-        return match.group(0)
+    term = match(tweet.lower(), trans_pattern)
+    if term != '':
+        return term
     
-    match = match(tweet.lower(), quotes_pattern)
-    if match != '':
-        return match.group(0)[1:-1]
+    term = match(tweet.lower(), quotes_pattern)
+    if term != '':
+        return term[1:-1]
     
     return ''
 
@@ -30,11 +30,13 @@ def ask_for_bored(tweet):
 def reply(tweet):
 
     # Check wokkie-tokkie matches
-    match = match(tweet, wt_pattern)
+    term = match(tweet, wt_pattern)
   
-    if (match != ''):
+    translated_part = ask_for_translation(tweet)
+
+    if (term != ''):
          # There has been an instance of 'wokkie tokkie'. Our response is to give a translation.
-        translation = wokkietokkie.decipher(match)
+        translation = wokkietokkie.decipher(term)
         
         # Check if bad word
         if (replies.isBad(translation) == Word.bad_en):
@@ -48,9 +50,9 @@ def reply(tweet):
         
         # Return translation
         return replies.generate(Template.translation, translation)
-    elif ask_for_translation(tweet) != '':
+    elif translated_part != '':
         # Translate
-       return replies.generate(Template.translation, wokkietokkie.encipher(tweet))
+       return replies.generate(Template.translation, wokkietokkie.encipher(translated_part))
     elif ask_for_bored(tweet):
         return replies.generate(Template.bored)
     else:
