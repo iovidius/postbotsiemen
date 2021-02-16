@@ -55,10 +55,6 @@ def reply_to_mentions(api, since_id):
             if tweet.in_reply_to_status_id is not None:
                 continue
             
-            # Check if there is already a reply
-            if hasattr(tweet, 'in_reply_to_status_id_str'):
-                continue
-
             # preprocess
             input = tweet.text.replace('@PostbotSiemen', '').strip()
             rep = '@' + tweet.user.screen_name + ' ' + reply(input)
@@ -68,6 +64,10 @@ def reply_to_mentions(api, since_id):
 
             print("Replying to " + tweet.user.screen_name)
             api.update_status(rep, tweet.id)
+
+            f = open("data/lastTweet.txt", "w")
+            f.write(new_since_id)
+            f.close()
         except tweepy.TweepError as e:
             print(e.reason)
 
@@ -85,7 +85,10 @@ def main():
     print("Started!")
     api = create_api()
     print("Connected!")
-    since_id = 1
+
+    f = open("data/lastTweet.txt","r")
+    since_id = int(f.readline())
+    f.close()
 
     while True:
         since_id = reply_to_mentions(api, since_id)
