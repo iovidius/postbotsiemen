@@ -22,13 +22,13 @@ since_id = getData('lastTweet')
 last_quote = getData('lastQuote')
 
 
-@tl.job(interval=timedelta(hours=6))
+@tl.job(interval=timedelta(seconds=15))
 def MentionsJob():
     global since_id
     since_id = tweets.reply_to_mentions(api, since_id)
     
         
-@tl.job(interval=timedelta(days=7))
+@tl.job(interval=timedelta(hours=5))
 def tweet_quote(api):
     # Select a random quote
     with open("data/siemen.txt") as f:
