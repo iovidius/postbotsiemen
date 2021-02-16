@@ -7,9 +7,9 @@ from data import getData, setData
 
 import tweets
 from config import create_api
-
+import sys
 import random
-from datetime import datetime, timedelta
+from datetime import timedelta
 from timeloop import Timeloop
 
 tl = Timeloop()
@@ -20,7 +20,7 @@ api = create_api()
 print("Connected!")
 since_id = getData('lastTweet')
 last_quote = getData('lastQuote')
-
+sys.stdout.flush()
 
 @tl.job(interval=timedelta(seconds=15))
 def MentionsJob():

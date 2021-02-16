@@ -1,7 +1,7 @@
 import wokkietokkie
 import replies
 import tweepy
-
+import sys
 from replies import Template, Word
 import data
 
@@ -58,7 +58,9 @@ def reply_to_mentions(api, since_id):
             api.update_status(rep, tweet.id)
 
             data.setData('lastTweet', new_since_id)
+            
         except tweepy.TweepError as e:
             print(e.reason)
 
+        sys.stdout.flush()
     return new_since_id
