@@ -20,7 +20,6 @@ api = create_api()
 print("Connected!")
 since_id = getData('lastTweet')
 last_quote = getData('lastQuote')
-sys.stdout.flush()
 
 @tl.job(interval=timedelta(seconds=15))
 def MentionsJob():
