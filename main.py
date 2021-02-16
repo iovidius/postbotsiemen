@@ -10,9 +10,10 @@ from config import create_api
 import sys
 import random
 from datetime import timedelta
-from timeloop import Timeloop
+#from timeloop import Timeloop
+import time
 
-tl = Timeloop()
+#tl = Timeloop()
 
 # Main function
 print("Started!")
@@ -20,15 +21,15 @@ api = create_api()
 print("Connected!")
 since_id = getData('lastTweet')
 last_quote = getData('lastQuote')
-sys.stdout.flush()
+#sys.stdout.flush()
 
-@tl.job(interval=timedelta(seconds=15))
+#@tl.job(interval=timedelta(seconds=15))
 def MentionsJob():
     global since_id
     since_id = tweets.reply_to_mentions(api, since_id)
     
         
-@tl.job(interval=timedelta(hours=5))
+#@tl.job(interval=timedelta(hours=5))
 def tweet_quote(api):
     # Select a random quote
     with open("data/siemen.txt") as f:
@@ -37,4 +38,8 @@ def tweet_quote(api):
         tweet = api.update_status(random.choice(x for x in lines if x != oldQuote))
         setData('lastQuote', tweet.text)
 
-tl.start(block=True)
+#tl.start(block=True)
+
+while(True):
+    MentionsJob()
+    time.sleep(15)
