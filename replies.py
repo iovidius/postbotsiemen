@@ -46,10 +46,10 @@ def generate(type, trans = ""):
 def isBad(input):
     with open('data/bad-words-nl.txt') as file:
       for line in file:
-          if line[:-1] == input:
-              return Word.bad_nl
+        if line[:-1] == input:
+            return Word.bad_nl
     with open('data/bad-words-en.txt') as file:
-      for line[:-1] in file:
-          if line == input:
+      for line in file:
+          if line[:-1] == input:
               return Word.bad_en
     return Word.normal

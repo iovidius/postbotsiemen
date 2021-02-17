@@ -37,5 +37,4 @@ def tweet_quote():
         setData('lastQuote', tweet.text)
         print('Sent quote')
 
-#tl.start(block=True)
-print(tweets.reply('ik verveel me'))
+tl.start(block=True)
