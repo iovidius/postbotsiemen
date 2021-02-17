@@ -30,7 +30,7 @@ def ask_for_bored(tweet):
 def reply(tweet):
 
     # Check wokkie-tokkie matches
-    term = match(tweet, wt_pattern)
+    term = match(tweet, wt_pattern).lower()
   
     translated_part = ask_for_translation(tweet)
 

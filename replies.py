@@ -38,10 +38,12 @@ def generate(type, trans = ""):
 
 # Checks if the user tries to get Siemen to say bad words
 def isBad(input):
-    with open('data/bad-words-nl.txt') as myfile:
-     if input in myfile.read():
-         return Word.bad_nl
-    with open('data/bad-words-en.txt') as myfile:
-     if input in myfile.read():
-         return Word.bad_en
+    with open('data/bad-words-nl.txt') as file:
+      for line in file:
+          if line[:-1] == input:
+              return Word.bad_nl
+    with open('data/bad-words-en.txt') as file:
+      for line[:-1] in file:
+          if line == input:
+              return Word.bad_en
     return Word.normal
