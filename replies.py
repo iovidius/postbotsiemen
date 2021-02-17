@@ -12,6 +12,12 @@ bored_template = ["Ohhh, maar ik heb geen tijd, ik moet weeerken! Dááárom.", 
 Template = Enum('Template', 'dunno translation confirmation bad_nl bad_en too_long bored')
 Word = Enum('Word', 'bad_en bad_nl normal')
 
+def random_url():
+    with open('data/urls.txt') as f:
+        lines = f.readlines()
+        return random.choice(lines)
+
+
 # Generates a sentence based on the templates above.
 def generate(type, trans = ""):
     if type == Template.dunno:
@@ -33,7 +39,7 @@ def generate(type, trans = ""):
         return random.choice(too_long_template)
 
     if type == Template.bored:
-        return random.choice(bored_template)
+        return random.choice(bored_template) + ' Misskien kan dit filmpje je bekoren ' + random_url()
     
 
 # Checks if the user tries to get Siemen to say bad words
