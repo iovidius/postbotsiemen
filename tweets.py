@@ -29,6 +29,9 @@ def ask_for_bored(tweet):
 # Generate a reply to a tweet
 def reply(tweet):
 
+    # preprocess
+    tweet = tweet.replace('‘',"'").replace('’',"'").replace('“','"').replace('”','"')
+
     # Check wokkie-tokkie matches
     term = match(tweet, wt_pattern).lower()
   

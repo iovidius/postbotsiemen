@@ -26,7 +26,7 @@ def MentionsJob():
     since_id = tweets.reply_to_mentions(api, since_id)
     
         
-@tl.job(interval=timedelta(days=1))
+@tl.job(interval=timedelta(days=7))
 def tweet_quote():
     # Select a random quote
     with open("data/siemen.txt") as f:
