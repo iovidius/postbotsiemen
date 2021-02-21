@@ -10,5 +10,3 @@ This bot makes use of the [Tweepy library](https://www.tweepy.org/). It scans fo
 
 ## How to run?
 Run **main.py**.
-
-Don't forget to update the _lastTweet_ and _lastQuote_ entry in **data/data.json** in order to prevent Siemen from replying to old tweets and tweeting the same quote in a row. In a future release this should be done automatically upon initializing.
