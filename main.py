@@ -3,12 +3,13 @@
 #   2) Send people who are bored YT links
 #   3) Posts a quote every week 
 
-from data import getData, setData
+import datetime
+from types import LambdaType
 
 import tweets
 from config import create_api
 import random
-from datetime import timedelta
+from datetime import timedelta, date
 from timeloop import Timeloop
 
 tl = Timeloop()
@@ -17,8 +18,25 @@ tl = Timeloop()
 print("Started!")
 api = create_api()
 print("Connected!")
-since_id = getData('lastTweet')
-last_quote = getData('lastQuote')
+
+# retrieve lastTweet
+statuses = api.home_timeline()
+since_id = statuses[0].id
+print("Last tweet: " + statuses[0].text)
+
+def tweet_quote():
+    # Select a random quote
+    with open("data/siemen.txt") as f:
+        lines = f.readlines()
+        tweet = api.update_status(random.choice(lines))
+        print('Sent quote: ' + tweet.text)
+
+# send quote. Since Heroku is restarted every day, and we want to tweet a quote every week,
+# we'll check the date against a start date
+startdate = date(2021,2,16)
+if (date.today() - startdate).days == 7:
+    tweet_quote()
+
 
 @tl.job(interval=timedelta(seconds=15))
 def MentionsJob():
@@ -26,15 +44,4 @@ def MentionsJob():
     since_id = tweets.reply_to_mentions(api, since_id)
     
         
-@tl.job(interval=timedelta(days=7))
-def tweet_quote():
-    # Select a random quote
-    with open("data/siemen.txt") as f:
-        lines = f.readlines()
-        oldQuote = getData('lastQuote')
-        quotes = [x for x in lines if x != oldQuote]
-        tweet = api.update_status(random.choice(quotes))
-        setData('lastQuote', tweet.text)
-        print('Sent quote')
-
 tl.start(block=True)
