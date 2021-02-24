@@ -31,10 +31,11 @@ def tweet_quote():
         tweet = api.update_status(random.choice(lines))
         print('Sent quote: ' + tweet.text)
 
-# send quote. Since Heroku is restarted every day, and we want to tweet a quote every week,
+# send quote. Since Heroku is restarted every day (and 0-216 mins), and we want to tweet a quote every week,
 # we'll check the date against a start date
 startdate = date(2021,2,16)
-if (date.today() - startdate).days == 7:
+d = (date.today() - startdate).days
+if d % 7 == 0 or d % 7 == 1:
     tweet_quote()
 
 
