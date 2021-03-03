@@ -35,7 +35,7 @@ def tweet_quote():
 # we'll check the date against a start date
 startdate = date(2021,2,16)
 d = (date.today() - startdate).days
-if d % 7 == 0 or d % 7 == 1:
+if d % 7 == 0: # once in approx. 12 weeks, Siemen skips a week (depending on the random Heroku restart times)
     tweet_quote()
 
 
